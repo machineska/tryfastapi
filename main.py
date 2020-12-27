@@ -27,10 +27,15 @@ async def read_item(skip: int = 0, limit: int = 10):
 
 
 @app.get('/items/{item_id}')
-async def read_item(item_id: str, q: Optional[str] = None):
+async def read_item(item_id: str, q: Optional[str] = None, short: bool = False):
+    item = {'item_id': item_id}
     if q:
-        return {'item_id': item_id, 'q': q}
-    return {'item_id': item_id}
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {'description': 'This is amazing item that has long descriptions'}
+        )
+    return item
 
 @app.get('/')
 async def root():
